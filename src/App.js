@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import 'chart.js/auto'; 
 import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import './App.css';
@@ -136,6 +135,27 @@ function App() {
 
   const smoothedData = movingAverage(chartData.datasets[0].data, 5);
 
+  const chartOptions = {
+    scales: {
+      x: {
+        grid: {
+          color: 'blue' // Изменяем цвет оси X на синий
+        },
+        ticks: {
+          color: 'blue' // Изменяем цвет подписей оси X на синий
+        }
+      },
+      y: {
+        grid: {
+          color: 'rgba(0, 0, 0, 0.1)' // Оставляем цвет оси Y по умолчанию или изменяем по желанию
+        },
+        ticks: {
+          color: 'black' // Оставляем цвет подписей оси Y по умолчанию или изменяем по желанию
+        }
+      }
+    }
+  };
+
   return (
     <div className="App">
       <h1>Угадай цвет карты</h1>
@@ -193,6 +213,7 @@ function App() {
                     data: showSmoothedChart ? smoothedData : chartData.datasets[0].data
                   }]
                 }}
+                options={chartOptions}
               />
             </div>
           )}
