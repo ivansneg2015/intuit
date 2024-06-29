@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import 'chart.js/auto'; 
 import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import './App.css';
