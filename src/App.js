@@ -9,7 +9,7 @@ function App() {
   const [color, setColor] = useState(Math.random() > 0.5 ? 'black' : 'white');
   const [guess, setGuess] = useState('');
   const [result, setResult] = useState('');
-  const [attempts, setAttempts] = useState(100);
+  const [attempts, setAttempts] = useState(1000);
   const [remainingAttempts, setRemainingAttempts] = useState(100);
   const [trainingTime, setTrainingTime] = useState(5);
   const [timer, setTimer] = useState(300);
