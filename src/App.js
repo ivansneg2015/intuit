@@ -116,7 +116,7 @@ function App() {
   };
 
   const timeOptions = Array.from({ length: 6 }, (_, i) => (i + 1) * 5);
-  const attemptOptions = [100, 200, 300, 400, 500];
+  const attemptOptions = [1000, 2000, 3000, 4000, 5000];
 
   const movingAverage = (data, windowSize) => {
     if (data.length === 0) {
@@ -139,7 +139,7 @@ function App() {
     scales: {
       x: {
         grid: {
-          color: 'rgba(0, 0, 0, 0.1)' // Возвращаем цвет оси X по умолчанию
+          color: 'rgba(0, 255, 0, 0.1)' // Возвращаем цвет оси X по умолчанию
         },
         ticks: {
           color: 'black' // Возвращаем цвет подписей оси X по умолчанию
