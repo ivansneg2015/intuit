@@ -44,8 +44,10 @@ function App() {
 
   const handleGuess = (guessedColor) => {
     if (remainingAttempts > 0) {
+      const newColor = Math.random() > 0.5 ? 'black' : 'white';
+      setColor(newColor);
       setGuess(guessedColor);
-      const isCorrect = guessedColor === color;
+      const isCorrect = guessedColor === newColor;
       if (isCorrect) {
         setResult('Правильно!');
         setScore(score + 1);
@@ -66,7 +68,6 @@ function App() {
         }]
       });
 
-      // Добавляем класс для визуальной обратной связи
       const buttons = document.querySelectorAll('.color-button');
       buttons.forEach(button => button.classList.remove('correct', 'incorrect'));
       const selectedButton = guessedColor === 'black' ? buttons[0] : buttons[1];
