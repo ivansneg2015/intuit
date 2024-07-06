@@ -55,7 +55,6 @@ function App() {
       }
       setRemainingAttempts(remainingAttempts - 1);
 
-      // Обновление данных для графика после каждого нажатия
       const newLabels = [...chartData.labels, chartData.labels.length + 1];
       const newData = [...chartData.datasets[0].data, score];
 
@@ -66,6 +65,15 @@ function App() {
           data: newData
         }]
       });
+
+      // Добавляем класс для визуальной обратной связи
+      const buttons = document.querySelectorAll('.color-button');
+      buttons.forEach(button => button.classList.remove('correct', 'incorrect'));
+      const selectedButton = guessedColor === 'black' ? buttons[0] : buttons[1];
+      selectedButton.classList.add(isCorrect ? 'correct' : 'incorrect');
+      setTimeout(() => {
+        selectedButton.classList.remove('correct', 'incorrect');
+      }, 1000);
     } else {
       setResult('У вас закончились попытки!');
     }
@@ -139,18 +147,18 @@ function App() {
     scales: {
       x: {
         grid: {
-          color: 'rgba(0, 255, 0, 0.1)' // Возвращаем цвет оси X по умолчанию
+          color: 'rgba(0, 255, 0, 0.1)'
         },
         ticks: {
-          color: 'black' // Возвращаем цвет подписей оси X по умолчанию
+          color: 'black'
         }
       },
       y: {
         grid: {
-          color: 'rgba(0, 0, 0, 0.1)' // Оставляем цвет оси Y по умолчанию или изменяем по желанию
+          color: 'rgba(0, 0, 0, 0.1)'
         },
         ticks: {
-          color: 'black' // Оставляем цвет подписей оси Y по умолчанию или изменяем по желанию
+          color: 'black'
         }
       }
     }

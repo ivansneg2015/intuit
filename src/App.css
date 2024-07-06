@@ -70,3 +70,54 @@ button:hover {
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+.color-button {
+  width: 100px;
+  height: 100px;
+  border: none;
+  border-radius: 50%;
+  margin: 10px;
+  transition: background-color 0.5s;
+}
+
+.color-button.black-button {
+  background-color: black;
+}
+
+.color-button.white-button {
+  background-color: white;
+  border: 2px solid black;
+}
+
+.color-button.correct {
+  background-color: green !important;
+  animation: pulse-green 1s;
+}
+
+.color-button.incorrect {
+  background-color: red !important;
+  animation: pulse-red 1s;
+}
+
+@keyframes pulse-green {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 255, 0, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(0, 255, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 255, 0, 0);
+  }
+}
+
+@keyframes pulse-red {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(255, 0, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+  }
+}
