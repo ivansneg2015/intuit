@@ -3,7 +3,7 @@ import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import './App.css';
 import { takeScreenshot } from './screenshotService';
-import { sendEmailWithAttachment } from './emailService';
+import axios from 'axios';
 
 Chart.register(...registerables);
 
@@ -88,7 +88,16 @@ function App() {
     setShowChart(true);
     if (chartRef.current) {
       const screenshot = await takeScreenshot(chartRef.current);
-      await sendEmailWithAttachment('recipient@example.com', 'График угадываний', 'Прилагаем снимок графика угадываний.', screenshot);
+      try {
+        await axios.post('http://localhost:3000/send-email', {
+          to: 'recipient@example.com',
+          subject: 'График угадываний',
+          text: 'Прилагаем снимок графика угадываний.',
+          attachment: screenshot
+        });
+      } catch (error) {
+        console.error('Error sending email:', error);
+      }
     }
   };
 
