@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Line } from 'react-chartjs-2';
 import { Chart, registerables } from 'chart.js';
 import './App.css';
+import { takeScreenshot } from './screenshotService';
+import { sendEmailWithAttachment } from './emailService';
 
 Chart.register(...registerables);
 
@@ -37,6 +39,7 @@ function App() {
       }, 1000);
     } else if (timer === 0) {
       setIsTraining(false);
+      handleTrainingEnd();
       clearInterval(interval);
     }
     return () => clearInterval(interval);
@@ -77,6 +80,15 @@ function App() {
       }, 1000);
     } else {
       setResult('У вас закончились попытки!');
+      handleTrainingEnd();
+    }
+  };
+
+  const handleTrainingEnd = async () => {
+    setShowChart(true);
+    if (chartRef.current) {
+      const screenshot = await takeScreenshot(chartRef.current);
+      await sendEmailWithAttachment('recipient@example.com', 'График угадываний', 'Прилагаем снимок графика угадываний.', screenshot);
     }
   };
 
