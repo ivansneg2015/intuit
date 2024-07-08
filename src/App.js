@@ -11,10 +11,6 @@ function App() {
   const [color, setColor] = useState(Math.random() > 0.5 ? 'black' : 'white');
   const [guess, setGuess] = useState('');
   const [result, setResult] = useState('');
-  const [attempts, setAttempts] = useState(1000);
-  const [remainingAttempts, setRemainingAttempts] = useState(100);
-  const [trainingTime, setTrainingTime] = useState(5);
-  const [timer, setTimer] = useState(300);
   const [isTraining, setIsTraining] = useState(false);
   const [score, setScore] = useState(0);
   const [showChart, setShowChart] = useState(false);
@@ -32,56 +28,40 @@ function App() {
   const chartRef = useRef(null);
 
   useEffect(() => {
-    let interval = null;
-    if (isTraining && timer > 0) {
-      interval = setInterval(() => {
-        setTimer(prevTimer => prevTimer - 1);
-      }, 1000);
-    } else if (timer === 0) {
-      setIsTraining(false);
-      handleTrainingEnd();
-      clearInterval(interval);
-    }
-    return () => clearInterval(interval);
-  }, [isTraining, timer]);
+    // Timer logic is removed
+  }, [isTraining]);
 
   const handleGuess = (guessedColor) => {
-    if (remainingAttempts > 0) {
-      const newColor = Math.random() > 0.5 ? 'black' : 'white';
-      setColor(newColor);
-      setGuess(guessedColor);
-      const isCorrect = guessedColor === newColor;
-      if (isCorrect) {
-        setResult('Правильно!');
-        setScore(score + 1);
-      } else {
-        setResult('Неправильно!');
-        setScore(score - 1);
-      }
-      setRemainingAttempts(remainingAttempts - 1);
-
-      const newLabels = [...chartData.labels, chartData.labels.length + 1];
-      const newData = [...chartData.datasets[0].data, score];
-
-      setChartData({
-        labels: newLabels,
-        datasets: [{
-          ...chartData.datasets[0],
-          data: newData
-        }]
-      });
-
-      const buttons = document.querySelectorAll('.color-button');
-      buttons.forEach(button => button.classList.remove('correct', 'incorrect'));
-      const selectedButton = guessedColor === 'black' ? buttons[0] : buttons[1];
-      selectedButton.classList.add(isCorrect ? 'correct' : 'incorrect');
-      setTimeout(() => {
-        selectedButton.classList.remove('correct', 'incorrect');
-      }, 1000);
+    const newColor = Math.random() > 0.5 ? 'black' : 'white';
+    setColor(newColor);
+    setGuess(guessedColor);
+    const isCorrect = guessedColor === newColor;
+    if (isCorrect) {
+      setResult('Правильно!');
+      setScore(score + 1);
     } else {
-      setResult('У вас закончились попытки!');
-      handleTrainingEnd();
+      setResult('Неправильно!');
+      setScore(score - 1);
     }
+
+    const newLabels = [...chartData.labels, chartData.labels.length + 1];
+    const newData = [...chartData.datasets[0].data, score];
+
+    setChartData({
+      labels: newLabels,
+      datasets: [{
+        ...chartData.datasets[0],
+        data: newData
+      }]
+    });
+
+    const buttons = document.querySelectorAll('.color-button');
+    buttons.forEach(button => button.classList.remove('correct', 'incorrect'));
+    const selectedButton = guessedColor === 'black' ? buttons[0] : buttons[1];
+    selectedButton.classList.add(isCorrect ? 'correct' : 'incorrect');
+    setTimeout(() => {
+      selectedButton.classList.remove('correct', 'incorrect');
+    }, 1000);
   };
 
   const handleTrainingEnd = async () => {
@@ -103,8 +83,6 @@ function App() {
 
   const startTraining = () => {
     setIsTraining(true);
-    setRemainingAttempts(attempts);
-    setTimer(trainingTime * 60);
     setColor(Math.random() > 0.5 ? 'black' : 'white');
     setGuess('');
     setResult('');
@@ -125,8 +103,6 @@ function App() {
 
   const resetAll = () => {
     setIsTraining(false);
-    setRemainingAttempts(attempts);
-    setTimer(trainingTime * 60);
     setColor(Math.random() > 0.5 ? 'black' : 'white');
     setGuess('');
     setResult('');
@@ -144,9 +120,6 @@ function App() {
       }]
     });
   };
-
-  const timeOptions = Array.from({ length: 6 }, (_, i) => (i + 1) * 5);
-  const attemptOptions = [1000, 2000, 3000, 4000, 5000];
 
   const movingAverage = (data, windowSize) => {
     if (data.length === 0) {
@@ -191,22 +164,6 @@ function App() {
       <h1>Угадай цвет карты</h1>
       {!isTraining ? (
         <div>
-          <label>
-            Количество попыток:
-            <select value={attempts} onChange={(e) => setAttempts(parseInt(e.target.value))}>
-              {attemptOptions.map(option => (
-                <option key={option} value={option}>{option}</option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Время тренировки (мин):
-            <select value={trainingTime} onChange={(e) => setTrainingTime(parseInt(e.target.value))}>
-              {timeOptions.map(option => (
-                <option key={option} value={option}>{option}</option>
-              ))}
-            </select>
-          </label>
           <button onClick={startTraining}>Начать тренировку</button>
         </div>
       ) : (
@@ -228,8 +185,6 @@ function App() {
             <div>
               <p>Ваша догадка: {guess}</p>
               <p>Результат: {result}</p>
-              <p>Осталось попыток: {remainingAttempts}</p>
-              <p>Осталось времени: {Math.floor(timer / 60)} мин {timer % 60} сек</p>
             </div>
           )}
           {showChart && (
